@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { FaWallet } from 'react-icons/fa';
+
 
 export const Navbar = () => {
   return (
@@ -25,13 +27,19 @@ export const Navbar = () => {
           </div>
           <div className="flex flex-col text-white">
             <span className="font-bold leading-tight ">
-              Asset Chain Starterkits
+              RWA ISUSU
             </span>
             <span className="text-xs">by Xend Finance</span>
           </div>
         </Link>
       </div>
+      <div className="flex items-center gap-4">
+        {/* Wallet Icon */}
+        <Link href="/wallet" passHref>
+          <FaWallet className="text-4xl text-white cursor-pointer" />
+        </Link>
       <ConnectButton />
+    </div>
     </div>
   );
 };

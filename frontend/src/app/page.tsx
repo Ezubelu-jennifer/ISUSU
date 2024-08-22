@@ -1,13 +1,22 @@
 "use client";
 import { useAccount } from "wagmi";
 import Debug from "@/components/Debug";
+import SignInSignUp from "@/components/SigninSignup";
 
 export default function Home() {
   const { address: connectedAddress } = useAccount();
   return (
     <>
       <div className="pt-10">
-        <Debug />
+        <SignInSignUp/>
+      </div>
+    </>
+  );
+}
+
+
+/**
+ * <Debug />
         
         <div className="text-center mt-8 bg-[#DAE8FF] p-10">
           <h1 className="text-4xl my-0">Debug your Contracts</h1>
@@ -19,7 +28,4 @@ export default function Home() {
             </code>{" "}
           </p>
         </div>
-      </div>
-    </>
-  );
-}
+ */

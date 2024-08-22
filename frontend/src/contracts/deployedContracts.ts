@@ -9,7 +9,51 @@
  */
 
 const deployedContracts = {
-
+  assetchain_testnet: {
+    contractName: "Greeter",
+    chainId: "42421",
+    address: "0x1Cb2a1d9a592Ed386C3126a5cabF4C7A10fD9406",
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "_greeting",
+            type: "string",
+          },
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor",
+      },
+      {
+        inputs: [],
+        name: "greet",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "_greeting",
+            type: "string",
+          },
+        ],
+        name: "setGreeting",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    inheritedFunctions: {},
+  },
 };
 
 export default deployedContracts;

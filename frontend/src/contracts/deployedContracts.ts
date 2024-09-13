@@ -10,24 +10,294 @@
 
 const deployedContracts = {
   assetchain_testnet: {
-    contractName: "Greeter",
+    contractName: "VotingAndPayment",
     chainId: "42421",
-    address: "0x1Cb2a1d9a592Ed386C3126a5cabF4C7A10fD9406",
+    address: "0x760d15a14630D79fB16DA5021279da98C4aC402F",
     abi: [
       {
-        inputs: [
-          {
-            internalType: "string",
-            name: "_greeting",
-            type: "string",
-          },
-        ],
+        inputs: [],
         stateMutability: "nonpayable",
         type: "constructor",
       },
       {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "contributor",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+        ],
+        name: "ContributionMade",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "address",
+            name: "newAddress",
+            type: "address",
+          },
+        ],
+        name: "GroupWalletAddressUpdated",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+        ],
+        name: "PaymentProcessed",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "string",
+            name: "messageId",
+            type: "string",
+          },
+          {
+            indexed: false,
+            internalType: "address",
+            name: "voter",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "string",
+            name: "voteType",
+            type: "string",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "weight",
+            type: "uint256",
+          },
+        ],
+        name: "Voted",
+        type: "event",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "member",
+            type: "address",
+          },
+        ],
+        name: "authenticateMember",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        name: "authenticatedMembers",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256",
+          },
+        ],
+        name: "calculateRatio",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
         inputs: [],
-        name: "greet",
+        name: "contribute",
+        outputs: [],
+        stateMutability: "payable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "messageId",
+            type: "string",
+          },
+        ],
+        name: "endVoting",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "messageId",
+            type: "string",
+          },
+        ],
+        name: "getMessage",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "string",
+                name: "text",
+                type: "string",
+              },
+              {
+                internalType: "address",
+                name: "creator",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "votesFor",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "votesAgainst",
+                type: "uint256",
+              },
+              {
+                internalType: "string",
+                name: "imageUrl",
+                type: "string",
+              },
+              {
+                internalType: "uint256",
+                name: "timestamp",
+                type: "uint256",
+              },
+              {
+                internalType: "string",
+                name: "winner",
+                type: "string",
+              },
+            ],
+            internalType: "struct VotingAndPayment.Message",
+            name: "",
+            type: "tuple",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "getMessageIds",
+        outputs: [
+          {
+            internalType: "string[]",
+            name: "",
+            type: "string[]",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "messageId",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "user",
+            type: "address",
+          },
+        ],
+        name: "getUserVote",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "userAddress",
+                type: "address",
+              },
+              {
+                internalType: "string",
+                name: "voteType",
+                type: "string",
+              },
+              {
+                internalType: "uint256",
+                name: "weight",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct VotingAndPayment.UserVote",
+            name: "",
+            type: "tuple",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "groupWalletAddress",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        name: "messageIds",
         outputs: [
           {
             internalType: "string",
@@ -42,14 +312,176 @@ const deployedContracts = {
         inputs: [
           {
             internalType: "string",
-            name: "_greeting",
+            name: "",
             type: "string",
           },
         ],
-        name: "setGreeting",
+        name: "messages",
+        outputs: [
+          {
+            internalType: "string",
+            name: "text",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "creator",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "votesFor",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "votesAgainst",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "imageUrl",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "winner",
+            type: "string",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "owner",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "ratio",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "totalContributions",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "newAddress",
+            type: "address",
+          },
+        ],
+        name: "updateGroupWalletAddress",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        name: "userVotes",
+        outputs: [
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "voteType",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "weight",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "messageId",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "voteType",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "weight",
+            type: "uint256",
+          },
+        ],
+        name: "vote",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "votingEndTime",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        stateMutability: "payable",
+        type: "receive",
       },
     ],
     inheritedFunctions: {},

@@ -20,11 +20,14 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   */
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
+ // const owner = "0x837Af917f200356166651850334C98E95DF2072C";
 
-  await deploy("Greeter", {
+
+  await deploy("VotingAndPayment", {
+  //await deploy("Greeter", {
     from: deployer,
     // Contract constructor arguments
-    args: ["Welcome to Assetnet"],
+   // args: [groupWalletAddress],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -32,8 +35,8 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("Greeter", deployer);
-  console.log("👋 Initial greeting:", await yourContract.greet());
+  const yourContract = await hre.ethers.getContract<Contract>("VotingAndPayment", deployer);
+  console.log(await yourContract.getAddress());
 };
 
 export default deployYourContract;
@@ -41,4 +44,4 @@ export default deployYourContract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags Greeter
-deployYourContract.tags = ["Greeter"];
+deployYourContract.tags = ["VotingAndPayment"];

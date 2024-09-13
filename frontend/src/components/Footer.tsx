@@ -8,17 +8,15 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 
 export const Footer = () => {
   return (
-    <div className="py-8 px-1  lg:mb-0 bg-[#1d292c]">
-      <div className="w-full">
-        <ul className="menu menu-horizontal w-full">
-          <div className="flex justify-center items-center gap-2 text-sm w-full">
-            <Link
-              href="https://gotbit-faucet-backend-qa.test.gotbit.app/"
-              passHref
-              className="btn btn-primary btn-sm font-normal gap-1 text-white"
-            >
-              <span>Faucets</span>
-            </Link>
+    <div className="fixed bottom-0 left-0 w-full bg-[#1d292c] py-4 px-8 text-white">
+    <div className="flex justify-center items-center gap-4">
+      <Link
+        href="https://gotbit-faucet-backend-qa.test.gotbit.app/"
+        passHref
+        className="btn btn-primary btn-sm font-normal gap-1"
+      >
+        <span>Faucets</span>
+      </Link>
 
             <Link
               href="https://testnet.xendrwachain.com/"
@@ -54,8 +52,7 @@ export const Footer = () => {
                 Support
               </a>
             </div> */}
-          </div>
-        </ul>
+          
       </div>
     </div>
   );

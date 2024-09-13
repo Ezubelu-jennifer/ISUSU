@@ -1,60 +1,60 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
-import { FaUserFriends, FaUsers, FaMoneyBillWave, FaHistory, FaCogs, FaPlusCircle, FaHandHoldingUsd } from 'react-icons/fa';
+import { FaPlusCircle, FaUsers, FaCogs, FaUserFriends } from 'react-icons/fa';
+import styles from './Dashboard.module.css';
 
 const Dashboard: React.FC = () => {
+  const isAuthenticated = localStorage.getItem('authenticatedMember');
   return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-3 gap-3">
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/create-group">
-            <FaPlusCircle className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Create Group</span>
+    <div className="relative min-h-screen bg-gray-800">
+      {/* Background Image */}
+      <div
+        className={`absolute inset-0 bg-white ${styles.animateMoveBg}`}
+
+        //className={`absolute inset-0 bg-cover bg-center ${styles.animateMoveBg}`}
+       // style={{ backgroundImage: "url('')" }} // Make sure to use the correct path
+      ></div>
+
+
+      {/* Main Dashboard Content */}
+      <div className="relative z-10 p-6 text-white flex flex-col items-center justify-center h-full">
+      
+         {/* 2x2 Grid for Dashboard Options */}
+         <div className="grid grid-cols-2 gap-16 w-full max-w-2xl">
+          {/* Create Group */}
+          <div className="p-8 bg-transparent  rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
+            <Link href="/create-groups" className="flex flex-col items-center text-center">
+            <FaPlusCircle className={`text-7xl text-blue-400 mb-4 `} />
+            <span className="text-2xl font-semibold text-black">Create Group</span>
+            </Link>
+          </div>
+
+          {/* Join Group */}
+          <div className="p-8 bg-transparent rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
+            <Link href="/groups" className="flex flex-col items-center text-center">
+            <FaUsers className={`text-7xl text-green-400 mb-4 `} />
+            <span className="text-2xl font-semibold text-black">Join Group</span>
+            </Link>
+          </div>
+
+          {/* Settings */}
+          <div className="p-8 bg-transparent rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
+            <Link href="/settings" className="flex flex-col items-center text-center">
+            <FaCogs className={`text-7xl text-yellow-400 mb-4 `} />
+            <span className="text-2xl font-semibold text-black">Settings</span>
+            </Link>
+          </div>
+
+           {/* Members Section */}
+           <div className="p-8 bg-transparent rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
+            <Link href="/member-details" className="flex flex-col items-center text-center">
+            <FaUserFriends className={`text-7xl text-purple-400 mb-4 `} />
+            <span className="text-2xl font-semibold text-black">Members</span>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/add-members">
-            <FaUserFriends className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Add Members</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/disburse">
-            <FaHandHoldingUsd className="text-6xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Disburse</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/members">
-            <FaUsers className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Members</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/make-payment">
-            <FaMoneyBillWave className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Make Payment</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/payment-history">
-            <FaHistory className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Payment History</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/settings">
-            <FaCogs className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Settings</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4">
-          <Link href="/groups">
-            <FaUsers className="text-7xl text-blue-600 cursor-pointer" />
-          </Link>
-          <span className="mt-9">Groups</span>
-        </div>
-        <div className="flex flex-col items-center border-2 border-gray-300 rounded-lg p-4"></div> {/* Empty cell */}
       </div>
     </div>
   );

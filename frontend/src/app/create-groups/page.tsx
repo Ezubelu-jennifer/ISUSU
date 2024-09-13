@@ -1,29 +1,58 @@
-"use client"; 
+"use client";
 
 import React, { useState } from 'react';
 
-const CreateGroup: React.FC = () => {
+const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => void }> = ({ saveGroup }) => {
   const [groupName, setGroupName] = useState('');
-  const [numMembers, setNumMembers] = useState<number | ''>('');
+  const [targetMembers, setTargetMembers] = useState<number | ''>('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [currency, setCurrency] = useState('Naira'); // Default currency set to Naira
+  const [joinable, setJoinable] = useState(true); // Default to joinable
+  const [walletAddress, setWalletAddress] = useState(''); // Add wallet address state
+  const [secretKeys, setSecretKeys] = useState<string[]>([]);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission here
-    console.log('Group Name:', groupName);
-    console.log('Number of Members:', numMembers);
-    console.log('Phone Number:', phoneNumber);
-    console.log('Selected Currency:', currency);
+
+    // Create the member object for the group creator
+    const creatorMember = {
+      fullName: 'Group Creator', // Or any placeholder name
+      walletAddress,
+      secretKeys,
+    };
+
+    const newGroup = { groupName, targetMembers, phoneNumber, currency, joinable, numMembers: 1,  members: [creatorMember], }; // Initialize numMembers
+    
+    const storedGroups = localStorage.getItem('groups');
+    const groups = storedGroups ? JSON.parse(storedGroups) : [];
+    localStorage.setItem('groups', JSON.stringify([...groups, newGroup]));
+
+    if (saveGroup) saveGroup(newGroup, secretKeys);
+
+    setGroupName('');
+    setTargetMembers('');
+    setPhoneNumber('');
+    setCurrency('Naira');
+    setJoinable(true);
+    setWalletAddress(''); // Clear wallet address field
+
+    setSecretKeys([]);
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="text-center">
-        <h1 className="text-4xl mb-4">Create a New Group</h1>
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded shadow-md">
-          <div className="mb-4">
-            <label htmlFor="groupName" className="block text-lg font-medium mb-2">
+    <div className="container mx-auto p-6 bg-gray-100 min-h-screen flex items-center justify-center">
+    <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-semibold text-center mb-8 text-gray-700">
+        Create a New Group
+      </h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Group Name */}
+          <div className="form-group">
+            <label
+              htmlFor="groupName"
+              className="block text-lg font-medium text-gray-600 mb-2"
+            >
               Enter Group Name
             </label>
             <input
@@ -31,27 +60,35 @@ const CreateGroup: React.FC = () => {
               type="text"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="numMembers" className="block text-lg font-medium mb-2">
-              Number of Members
+          {/* Target Number of Members */}
+          <div className="form-group">
+            <label
+              htmlFor="targetMembers"
+              className="block text-lg font-medium text-gray-600 mb-2"
+            >
+              Target Number of Members
             </label>
             <input
-              id="numMembers"
+              id="targetMembers"
               type="number"
-              value={numMembers}
-              onChange={(e) => setNumMembers(Number(e.target.value))}
-              className="w-full p-2 border border-gray-300 rounded"
+              value={targetMembers}
+              onChange={(e) => setTargetMembers(Number(e.target.value))}
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="phoneNumber" className="block text-lg font-medium mb-2">
+          {/* Phone Number */}
+          <div className="form-group">
+            <label
+              htmlFor="phoneNumber"
+              className="block text-lg font-medium text-gray-600 mb-2"
+            >
               Phone Number
             </label>
             <input
@@ -59,20 +96,25 @@ const CreateGroup: React.FC = () => {
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="currency" className="block text-lg font-medium mb-2">
+        
+          {/* Currency Selection */}
+          <div className="form-group">
+            <label
+              htmlFor="currency"
+              className="block text-lg font-medium text-gray-600 mb-2"
+            >
               Select Currency
             </label>
             <select
               id="currency"
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="Naira">Naira</option>
@@ -80,10 +122,64 @@ const CreateGroup: React.FC = () => {
               <option value="RWA">RWA</option>
             </select>
           </div>
+        
+        
+        {/* Wallet Address */}
+         <div className="form-group">
+            <label
+              htmlFor="walletAddress"
+              className="block text-lg font-medium text-gray-600 mb-2"
+            >
+              Wallet Address
+            </label>
+            <input
+              id="walletAddress"
+              type="text"
+              value={walletAddress}
+              onChange={(e) => setWalletAddress(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-          <button
+           {/* Joinable Option */}
+           <div className="form-group flex items-center">
+            <input
+              id="joinable"
+              type="checkbox"
+              checked={joinable}
+              onChange={(e) => setJoinable(e.target.checked)}
+              className="mr-2 h-5 w-5 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label
+              htmlFor="joinable"
+              className="text-lg font-medium text-gray-600"
+            >
+              Allow new members to join
+            </label>
+          </div>
+
+         {/* Secret Keys */}
+         <div className="form-group">
+            <label
+              htmlFor="secretKeys"
+              className="block text-lg font-medium text-gray-600 mb-2"
+            >
+              Secret Keys (for members only)
+            </label>
+            <textarea
+              id="secretKeys"
+              value={secretKeys.join("\n")}
+              onChange={(e) => setSecretKeys(e.target.value.split("\n"))}
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter secret keys, one per line"
+            />
+          </div>
+
+           {/* Submit Button */}
+           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
           >
             Create Group
           </button>
@@ -92,5 +188,4 @@ const CreateGroup: React.FC = () => {
     </div>
   );
 };
-
 export default CreateGroup;

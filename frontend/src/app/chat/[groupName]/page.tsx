@@ -90,6 +90,7 @@ const [isusuDuration, setIsusuDuration] = useState<'weekly'|'monthly'|'annually'
  //votingStartTime  time parameters
 
  const [timeLeft, setTimeLeft] = useState<number>(0);
+ const [timeLefts, setTimeLefts] = useState<number>(0);
   
  const publicClient = createPublicClient({
   chain: assetchain_testnet,
@@ -106,6 +107,57 @@ const contract = getContract({
   abi: deployedContracts.assetchain_testnet.abi,
   client: publicClient,
 });
+
+//use effect for isusuduartions 
+
+useEffect(() => {
+  const calculateEndTime = () => {
+    const now = new Date();
+    let endTime = new Date(now);
+    switch (isusuDuration) {
+      case 'weekly':
+        endTime.setDate(now.getDate() + 7);
+        break;
+      case 'monthly':
+        endTime.setMonth(now.getMonth() + 1);
+        break;
+      case 'annually':
+      case 'yearly':
+        endTime.setFullYear(now.getFullYear() + 1);
+        break;
+      default:
+        endTime.setMonth(now.getMonth() + 1);
+        break;
+    }
+    return endTime;
+  };
+
+  const endTime = calculateEndTime().getTime();
+
+  const interval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = endTime - now;
+
+    if (distance < 0) {
+      clearInterval(interval);
+      setTimeLefts(0);
+    } else {
+      setTimeLefts(distance);
+    }
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [isusuDuration]);
+
+const formatTimeDay = (ms: number) => {
+  const seconds = Math.floor((ms / 1000) % 60);
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+};
+
+
 
  //use effect for vote type selection from local storage
  useEffect(() => {
@@ -438,9 +490,15 @@ const getVoteResult = (message: Message) => {
   };
 
   const handleMenuClick = (option: 'viewHistory' | 'contribution'| 'groupAccount'|'Settings') => {
-    setSelectedOption(option);
-    setShowMenu(false); // Close menu after selecting an option
+   // setSelectedOption(option);
+    if (selectedOption === option) {
+      setSelectedOption(null); // Close the menu if it's already open
+      setShowMenu(false); // Close menu after selecting an option
 
+    } else {
+      setSelectedOption(option); // Open the clicked menu
+
+    }
   };
 
   const handleContribution = async () => {
@@ -567,21 +625,26 @@ const goToSecretKeyManager = () => {
   
   return (
 
-    <div className="chat-page min-h-screen bg-gray-100 flex flex-col items-center py-8 px-4">
+    <div className="chat-page min-h-screen bg-gray-100 flex flex-col items-center py-8 px-4 ">
     <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
 
     {/* Header */}
-    <header className="header w-full bg-blue-500 text-white p-4">
-      <h1 className="title text-2xl font-bold">Chat - {groupName}</h1>
+    <header className="header w-full bg-[#1d292c] text-white p-4 flex justify-center items-center">
+    <h1 className="title text-2xl font-bold "> {groupName}</h1>
     </header>
   
       {/* Main Content Layout */}
-    <div className="flex flex-1">
+      <div className="flex flex-col flex-1">
+
+         
+      {/* Row Layout for Menu and Timers */}
+      <div className="flex w-full">
+
       {/* Left Menu (List Buttons) */}
-      <nav className="menu w-1/5 bg-white-200 p-4">
+      <nav className="menu bg-white-200 p-4 absolute z-10">
         <button
           onClick={() => setShowMenu(!showMenu)}
-          className="menu-button bg-blue-500 text-white p-2 w-full mb-2 hover:bg-blue-700"
+          className="menu-button bg-green-500 text-white p-2 w-full mb-2 hover:bg-green-700"
         >
         <FaBars /> {/* List icon */}
         </button>
@@ -655,21 +718,33 @@ const goToSecretKeyManager = () => {
 
       )}
       </nav>
+       
+   
 
   
-    <main className="content w-3/5 p-4 bg-white">
+    <main className="content w-1/5 p-4 bg-white absolute z-5">
       {selectedOption === 'viewHistory' && (
         <VoteHistory userId={getUserPhoneNumber()} groupName={groupName} />
       )}
       {selectedOption === 'contribution' && (
-        <div className="contribution-box">
+        <div className="contribution-box  absolute z-5"
+        style={{
+          padding: '20px',
+          background: '#fff',
+          borderRadius: '8px',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', // Box shadow for depth
+          margin: '0px auto', // Center the box horizontally
+          maxWidth: '260px', // Limit the width of the box
+          overflowX: 'auto', // Enable horizontal scrolling
+          whiteSpace: 'nowrap', // Prevent wrapping of inner content
+        }}>
           <h2>Make a Contribution</h2>
           <input
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount in ETH"
-            className="amount-input border p-2 mb-2 w-full"
+            className="amount-input border p-1 mb-1 w-full"
           />
           <button onClick={handleContribution} className="contribute-button bg-green-500 text-white p-2">
             Contribute
@@ -683,7 +758,17 @@ const goToSecretKeyManager = () => {
        
 
          {selectedOption === 'groupAccount' && (
-          <div className="account-box">
+          <div className="account-box absolute z-5"
+          style={{
+            padding: '20px',
+            background: '#fff',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', // Box shadow for depth
+            margin: '20px auto', // Center the box horizontally
+            maxWidth: '260px', // Limit the width of the box
+            overflowX: 'auto', // Enable horizontal scrolling
+            whiteSpace: 'nowrap', // Prevent wrapping of inner content
+          }}>
             <h2>Group Account</h2>
             <div className="account-options">
 
@@ -692,21 +777,21 @@ const goToSecretKeyManager = () => {
 
             {/* Account management buttons */}
             <button onClick={handleUpdateAccount} className="btn bg-blue-500 text-white mb-2 p-2">Update Account Password</button>
-            <button onClick={handleViewAccount} className="btn bg-blue-500 text-white mb-2 p-2">View Account Balance</button>
+            <button onClick={handleViewAccount} className="btn bg-green-500 text-white mb-2 p-2">View Account Balance</button>
                {/* Display balance right under "View Account Balance" */}
                {balance !== null && (
                   <p className="balance-info bg-gray-100 p-2 border mt-2">Balance: {balance} RWA</p>
                 )}
 
              {/* Navigation to Secret Key Manager */}
-             <button onClick={goToSecretKeyManager} className="btn bg-green-500 text-white mt-4 p-2">Manage Secret Key</button>
+             <button onClick={goToSecretKeyManager} className="btn bg-blue-500 text-white mt-4 p-2">Manage Secret Key</button>
              </div>
 
             
              {showAccountInput && (
         
                 
-                <button onClick={handleCalculateRatio} className="btn bg-blue-500 text-white mt-4 p-2">
+                <button onClick={handleCalculateRatio} className="btn bg-green-500 text-white mt-4 p-2">
                   Calculate Ratio
                 </button>
 
@@ -717,39 +802,58 @@ const goToSecretKeyManager = () => {
          )}
          
          {selectedOption === 'Settings' && (
-          <div className="settings-box">
+          <div className="Settings-box absolute z-5"
+          style={{
+            padding: '20px',
+            background: '#fff',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', // Box shadow for depth
+            margin: '20px auto', // Center the box horizontally
+            maxWidth: '260px', // Limit the width of the box
+            overflowX: 'auto', // Enable horizontal scrolling
+            whiteSpace: 'nowrap', // Prevent wrapping of inner content
+          }}>
             {/* Settings Content */}
             <h2>Settings</h2>
             {/* Isusu Type Selection */}
             <div className="isusu-type-selection mb-4">
             <h3 className="font-bold">Select Isusu Type</h3>
-              <button onClick={() =>  handleIsusuTypeChange('normal')} className={`btn ${isusuType === 'normal' ? 'bg-blue-500' : 'bg-gray-300'} text-white p-2 m-2`}>Normal</button>
-              <button onClick={() =>  handleIsusuTypeChange('purpose')} className={`btn ${isusuType === 'purpose' ? 'bg-blue-500' : 'bg-gray-300'} text-white p-2 m-2`}>Purpose</button>
+              <button onClick={() =>  handleIsusuTypeChange('normal')} className={`btn ${isusuType === 'normal' ? 'bg-green-500' : 'bg-gray-300'} text-white p-2 m-2`}>Normal</button>
+              <button onClick={() =>  handleIsusuTypeChange('purpose')} className={`btn ${isusuType === 'purpose' ? 'bg-green-500' : 'bg-gray-300'} text-white p-2 m-2`}>Purpose</button>
             </div>
             {/* Isusu Duration Selection */}
             <div className="isusu-duration-selection">
             <h3 className="font-bold">Select Isusu Duration</h3>
-              <button onClick={() => handleIsusuDurationChange('weekly')} className={`btn ${isusuDuration === 'weekly' ? 'bg-blue-500' : 'bg-gray-300'} text-white p-2 m-2`}>Weekly</button>
-              <button onClick={() => handleIsusuDurationChange('monthly')}className={`btn ${isusuDuration === 'monthly' ? 'bg-blue-500' : 'bg-gray-300'} text-white p-2 m-2`}>Monthly</button>
-              <button onClick={() => handleIsusuDurationChange('annually')} className={`btn ${isusuDuration === 'annually' ? 'bg-blue-500' : 'bg-gray-300'} text-white p-2 m-2`}>Annually</button>
-              <button onClick={() => handleIsusuDurationChange('yearly')} className={`btn ${isusuDuration === 'yearly' ? 'bg-blue-500' : 'bg-gray-300'} text-white p-2 m-2`}>Yearly</button>
+              <button onClick={() => handleIsusuDurationChange('weekly')} className={`btn ${isusuDuration === 'weekly' ? 'bg-green-500' : 'bg-gray-300'} text-white p-2 m-2`}>Weekly</button>
+              <button onClick={() => handleIsusuDurationChange('monthly')}className={`btn ${isusuDuration === 'monthly' ? 'bg-green-500' : 'bg-gray-300'} text-white p-2 m-2`}>Monthly</button>
+              <button onClick={() => handleIsusuDurationChange('annually')} className={`btn ${isusuDuration === 'annually' ? 'bg-green-500' : 'bg-gray-300'} text-white p-2 m-2`}>Annually</button>
+              <button onClick={() => handleIsusuDurationChange('yearly')} className={`btn ${isusuDuration === 'yearly' ? 'bg-green-500' : 'bg-gray-300'} text-white p-2 m-2`}>Yearly</button>
             </div>
           </div>
          )}
          
     </main>
 
-    <div className="timer w-1/5 bg-white-100 p-4">
-    <h2 className="font-bold">Voting Time Left:</h2>
+    <div className="flex flex-1 justify-around items-center px-40 space-x-4 ">
+    <div className="timer bg-white-100 p-4 flex-1 text-center ">
+   
+    <h2 className="font-bold absolute z-5">Voting Time Left:</h2>
     <p className="text-red-500">{formatTime(timeLeft)}</p>
     {status && <div className="payment-status">{status}</div>}
     </div>
+
+    <div className="timer bg-white-100 p-4 flex-1 text-center">
+    <h2 className="font-bold absolute z-5">Isusu Duration Countdown:</h2>
+    <p className="text-red-500">{timeLefts > 0 ? formatTimeDay(timeLefts) : "Isusu has ended"}</p>
     </div>
+    </div>
+    </div>
+    
 
 
    {/* Chat Messages Section */}
     <section className="chat-container bg-white p-4 flex-1 flex flex-col h-full">
-      <div className="messages border-b p-2 max-h-60 overflow-hidden hover:overflow-y-auto">
+      <div className="messages border-b p-2 max-h-80 overflow-hidden hover:overflow-y-auto">
         {messages.map(message => (
           <div key={message.id} className="message border-b p-2">
             <div className="message-header font-bold">
@@ -798,7 +902,7 @@ const goToSecretKeyManager = () => {
           className="iimage-upload-input border p-2 mr-2"
          />
         
-        <button type="submit" className="send-button bg-blue-500 text-white p-2">
+        <button type="submit" className="send-button bg-green-500 text-white p-2">
           Send
           </button>
 
@@ -809,7 +913,7 @@ const goToSecretKeyManager = () => {
           onChange={(e) => setMessagew(e.target.value)}
           className="message-input-field"
         />
-        <button type="button" className="wallet-address-button bg-blue-500 text-white p-2 ml-2" onClick={handleViewWalletAddresses}>
+        <button type="button" className="wallet-address-button bg-green-500 text-white p-2 ml-2" onClick={handleViewWalletAddresses}>
         View Wallet Addresses
         </button>
       </form>
@@ -817,6 +921,7 @@ const goToSecretKeyManager = () => {
     
   
    
+   </div>
    </div>
    </div>
   );

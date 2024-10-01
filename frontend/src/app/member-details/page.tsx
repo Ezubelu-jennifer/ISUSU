@@ -95,7 +95,7 @@ const MemberDetails: React.FC = () => {
     <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
      {/* Header with Member Details and Logout Button */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600">Member Details</h1>
+          <h1 className="text-3xl font-bold text-green-600">Member Details</h1>
           <button
             onClick={handleLogout}
             className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition-colors duration-300"
@@ -116,14 +116,14 @@ const MemberDetails: React.FC = () => {
             </div>
            
 
-            <h2 className="text-2xl font-bold mt-8 text-blue-600">Groups</h2>
+            <h2 className="text-2xl font-bold mt-8 text-green-600">Groups</h2>
             {groups.length > 0 ? (
               <ul className="list-disc list-inside mt-4">
                 {groups.map((group, index) => (
                   <li key={index} className="my-2">
                     <button
                       onClick={() => handleGroupClick(group.groupName)}
-                      className="text-blue-500 underline hover:text-blue-700"
+                      className="text-green-500 underline hover:text-blue-700"
                     >
                       {group.groupName}
                     </button>
@@ -134,7 +134,7 @@ const MemberDetails: React.FC = () => {
             <p className="mt-4 text-gray-600">No groups found.</p>
           )}
 
-          <h2 className="text-2xl font-bold mt-8 text-blue-600">Member Voting Power</h2>
+          <h2 className="text-2xl font-bold mt-8 text-green-600">Member Voting Power</h2>
           <p><strong>Ratio:</strong> {votingPower}</p>
           <p><strong>Voting Increment:</strong> {increment}</p>
         </div>

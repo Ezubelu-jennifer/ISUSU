@@ -45,6 +45,7 @@ const VoteHistory: React.FC<VoteHistoryProps> = ({ userId, groupName }) => {
     <div className="vote-history">
       <h2>Your Vote History</h2>
       {votes.length > 0 ? (
+      <div className="vote-list">
         <ul>
           {votes.map((vote, index) => (
             <li key={index} className="vote-item">
@@ -58,6 +59,7 @@ const VoteHistory: React.FC<VoteHistoryProps> = ({ userId, groupName }) => {
             </li>
           ))}
         </ul>
+        </div>
       ) : (
         <p>No vote history available.</p>
       )}
@@ -66,12 +68,16 @@ const VoteHistory: React.FC<VoteHistoryProps> = ({ userId, groupName }) => {
           padding: 20px;
           background: #fff;
           border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         h2 {
           margin-bottom: 20px;
         }
+         .vote-list {
+        max-height: 200px; /* Set the desired height */
+        overflow-y: auto; /* Enable vertical scrolling */
+       }
 
         ul {
           list-style: none;

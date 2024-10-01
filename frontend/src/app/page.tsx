@@ -21,22 +21,26 @@ export default function Home() {
   const handleAuthentication = () => {
     setIsAuthenticated(true);
     setShowModal(false); // Close modal after successful authentication
-    localStorage.setItem("username", "exampleUser"); // Store a mock user
+    //localStorage.setItem("username", "exampleUser"); // Store a mock user
 
   };
 
   useEffect(() => {
     // Check if the user is already authenticated (for example, by checking local storage)
     const storedUser = localStorage.getItem("username");
-    if (storedUser) {
+    const password = localStorage.getItem("password");
+    if (storedUser&& password) {
       setIsAuthenticated(true);
       setShowModal(false); // Hide modal if already authenticated
     }else{
       setShowModal(true);
+     
     }
   }, []);
 
   const handleLogout = () => {
+    console.log("Logout button clicked"); // Add this line
+
 
     setIsAuthenticated(false);
     setShowModal(true); // Show the modal again after logout
@@ -47,18 +51,26 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-gray-200 flex flex-col items-center justify-center">
+      
 
     {/* Display Dashboard only if authenticated */}
     {isAuthenticated ? (
-      <Dashboard onLogout={handleLogout} />
+      <Dashboard onLogout={ handleLogout} />
       ) : (
         <>
 
       {/* Overlay */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg relative z-60">
+          
+          <div className="bg-white p-12 rounded-lg shadow-lg relative z-60">
+             {/* Add your image here */}
+          <img
+           src="igwebuikelogo.png" // Make sure to provide the correct path to your image
+           alt="Description of image"
+           className="w-60 h-auto rounded-lg mb-3" // Set width to 32, height auto
+           />
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
               onClick={handleCloseModal}
@@ -83,7 +95,7 @@ export default function Home() {
        {isAuthenticated && (
         <button
           className="fixed bottom-4 right-4 bg-red-500 text-white p-2 rounded"
-          onClick={handleLogout}
+          onClick={ handleLogout}
         >
           Logout
         </button>

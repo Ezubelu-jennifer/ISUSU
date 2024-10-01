@@ -41,8 +41,8 @@ const Settings: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 p-8">
-      <h2 className="text-4xl font-bold text-center mb-12 text-blue-800">Settings</h2>
+    <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100 p-8">
+      <h2 className="text-4xl font-bold text-center mb-12 text-green-800">Settings</h2>
       <div className="bg-white p-8 rounded-xl shadow-xl max-w-2xl mx-auto space-y-8">
         
        {/* Voting Type Selection */}
@@ -53,7 +53,7 @@ const Settings: React.FC = () => {
               onClick={() => handleVotingTypeChange('normal')}
               className={`px-6 py-3 rounded-lg font-medium ${
                 selectedVotingType === 'normal'
-                  ? 'bg-blue-500 text-white shadow-md'
+                  ? 'bg-green-500 text-white shadow-md'
                   : 'bg-gray-200 text-gray-800'
               }`}
             >
@@ -64,7 +64,7 @@ const Settings: React.FC = () => {
           onClick={() => handleVotingTypeChange('weighted')}
           className={`px-6 py-3 rounded-lg font-medium ${
           selectedVotingType === 'weighted'
-            ? 'bg-blue-500 text-white shadow-md'
+            ? 'bg-green-500 text-white shadow-md'
             : 'bg-gray-200 text-gray-800'
           }`}
          >
@@ -82,18 +82,18 @@ const Settings: React.FC = () => {
             type="datetime-local"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400 mb-4"
+            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-400 mb-4"
           />
           <label className="block text-gray-700 mb-2 font-medium">End Time</label>
           <input
             type="datetime-local"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-400"
           />
             <button
             onClick={handleSubmit}
-            className="mt-6 w-full bg-blue-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-200"
+            className="mt-6 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-600 transition duration-200"
           >
             Start Voting
           </button>
@@ -108,7 +108,7 @@ const Settings: React.FC = () => {
             value={secretKey}
             onChange={(e) => setSecretKey(e.target.value)}
             placeholder="Enter new secret key"
-            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-400"
           />
         </div>
 
@@ -120,7 +120,7 @@ const Settings: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter new password"
-            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-400"
           />
         </div>
         
@@ -128,7 +128,7 @@ const Settings: React.FC = () => {
            <div>
           <button
             onClick={handleSave}
-            className="mt-6 w-full bg-blue-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-200"
+            className="mt-6 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-600 transition duration-200"
           >
             Save Settings
           </button>

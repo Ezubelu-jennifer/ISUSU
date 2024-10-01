@@ -27,7 +27,7 @@ contract VotingAndPayment {
     uint256 public ratio;
     uint256 public votingEndTime;
 
-     mapping(address => bool) public authenticatedMembers;
+    mapping(address => bool) public authenticatedMembers;
     mapping(string => Message) public messages;
     mapping(string => mapping(address => UserVote)) public userVotes;
     string[] public messageIds;  // Array of message IDs

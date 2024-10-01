@@ -60,7 +60,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               type="text"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
@@ -78,7 +78,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               type="number"
               value={targetMembers}
               onChange={(e) => setTargetMembers(Number(e.target.value))}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
@@ -96,7 +96,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
@@ -114,7 +114,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               id="currency"
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             >
               <option value="Naira">Naira</option>
@@ -137,7 +137,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               type="text"
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
@@ -149,7 +149,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               type="checkbox"
               checked={joinable}
               onChange={(e) => setJoinable(e.target.checked)}
-              className="mr-2 h-5 w-5 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+              className="mr-2 h-5 w-5 text-green-500 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label
               htmlFor="joinable"
@@ -171,7 +171,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
               id="secretKeys"
               value={secretKeys.join("\n")}
               onChange={(e) => setSecretKeys(e.target.value.split("\n"))}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Enter secret keys, one per line"
             />
           </div>
@@ -179,7 +179,7 @@ const CreateGroup: React.FC<{ saveGroup?: (group: any, secretKeys: string[]) => 
            {/* Submit Button */}
            <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+            className="w-full bg-green-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
           >
             Create Group
           </button>
